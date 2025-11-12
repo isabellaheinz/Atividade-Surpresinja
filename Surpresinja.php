@@ -6,11 +6,11 @@ $fundoAzul = "\033[44m";
 $vermelho = "\033[31m";
 $emojiGift = "\u{1F381}";
 $emojiFesta = "\u{1F389}";
+$emojiCoracaoBranco = "\u{1F90D}";
 $espaco = "                 ";
-$loteria = 1; // 1= MegaSena 2= Quina 3= LotoFácil 4= LotoMania
+$loteria = 0; // 1= MegaSena 2= Quina 3= LotoFácil 4= LotoMania
 $numeroApostas;
 $quantidadeApostas;
-
 $TabelaValoresMG = array(
 
     "Quanti. de numeros" => "Valor em R$",
@@ -69,11 +69,14 @@ $TabelaValoresLM = array(
                 $espaco . 50 => 3.00,             
 );
 
-
 Introducao();
 escolhaLoteria();
 escolhaNumerosEQuantidade();
 sorteador();
+
+print "\n\n";
+printSlow($espaco . $azul . "Muito obrigada por utilizar o Surpresinja! Volte sempre!");
+print $resetar . $emojiCoracaoBranco . $emojiFesta;
 
 
 if ($loteria == 1); {
@@ -109,7 +112,7 @@ function Introducao()
         print "\n";
 
 
-        $resposta = readline(printSlow("[1] Sim!\n[2] Não. Por favor repita o passo a passo."));
+        $resposta = readline(printSlow("[1] Sim!\n[2] Não. Por favor repita o passo a passo.  "));
 
 
         switch ($resposta) {
@@ -141,7 +144,7 @@ function escolhaLoteria()
 
     $continuar = true;
     while ($continuar == true) {
-        $resposta = readline(printSlow("\n[1] Mega Sena \n" . "[2] Quina \n" . "[3] LotoFacíl \n" . "[4] LotoMania \n\n"));
+        $resposta = readline(printSlow("\n[1] Mega Sena \n" . "[2] Quina \n" . "[3] LotoFacíl \n" . "[4] LotoMania     "));
 
         switch ($resposta) {
             case 1:
@@ -165,9 +168,11 @@ function escolhaLoteria()
                 break;
 
             default:
+                print"\n";
                 printSlow("Opção inválida. Escolha uma das opções:    \n");
         }
     }
+    print"\n";
 } //fim da funcao
 
 function escolhaNumerosEQuantidade()
@@ -350,7 +355,8 @@ function escolhaNumerosEQuantidade()
                 break;
 
             default:
-                printSlow("Opção inválida. Por favor escolha uma das opções abaixo: \n");
+                printSlow("Opção inválida. Por favor escolha uma das opções abaixo:     \n");
+                print "\n";
 
         } // fim do switch
 
@@ -390,19 +396,35 @@ function sorteador(){
     global $TabelaValoresLM;
 
     print "\n";
-    printSlow($espaco . $emojiBrilho . $azul . "Sorteando números!!  " );
+    printSlow($espaco . $emojiBrilho . $azul . "!Sorteando números!   " );
     print $resetar . $emojiBrilho . "\n";
 
 
     if($loteria == 1){
-       
+        
+        $min = 1;
+        $max = 60;
+    }
+    if($loteria == 2){
+        
+        $min = 1;
+        $max = 80;
+    }
+    if($loteria == 3){
+        
+        $min = 1;
+        $max = 25;
+    }
+     if($loteria == 4){
+        
+        $min = 00;
+        $max = 99;
+    }
+
        for ($i = 0; $i < $quantidadeApostas; $i++){
             
             printSlow($i + 1 . "° aposta: ");
             print "\n";
-            
-            $min = 1;
-            $max = 60;
             
             $numerosPossiveis = range($min, $max);
             shuffle($numerosPossiveis);
@@ -417,23 +439,36 @@ function sorteador(){
 
             print "\n";
             printSlow("Valor gasto nesta aposta:  ");
-            print $TabelaValoresMG[$espaco . $numeroApostas];
-            $valorTotal += $TabelaValoresMG[$espaco . $numeroApostas];
+
+            if($loteria == 1){
+                print $TabelaValoresMG[$espaco . $numeroApostas];
+                $valorTotal += $TabelaValoresMG[$espaco . $numeroApostas];
+            }
+            if($loteria == 2){
+                print $TabelaValoresQ[$espaco . $numeroApostas];
+                $valorTotal += $TabelaValoresQ[$espaco . $numeroApostas];
+            }
+            if($loteria == 3){
+                print $TabelaValoresLF[$espaco . $numeroApostas];
+                $valorTotal += $TabelaValoresLF[$espaco . $numeroApostas];
+            }
+            if($loteria == 4){
+                print $TabelaValoresLM[$espaco . $numeroApostas];
+                $valorTotal += $TabelaValoresLM[$espaco . $numeroApostas];
+            }
+
             printSlow(" R$.  ");
             print "\n\n";
-       }
+       }// fim do for
        
         printSlow("O valor total gasto será de: " . $valorTotal . " R$. ") ;
-    }
-
-
-
-}
+    
+}//fim da funcao
 
 function printSlow($texto)
 {
     $letra = "a";
-    $velocidade = 8000;
+    $velocidade = 25000;
     $tamanhoTexto = mb_strlen($texto);
     for ($i = 0; $i < $tamanhoTexto; $i++) {
 
