@@ -10,6 +10,7 @@ $espaco = "                 ";
 $loteria = 1; // 1= MegaSena 2= Quina 3= LotoFácil 4= LotoMania
 $numeroApostas;
 $quantidadeApostas;
+
 $TabelaValoresMG = array(
 
     "Quanti. de numeros" => "Valor em R$",
@@ -35,28 +36,44 @@ $TabelaValoresQ = array(
     "Quanti. de numeros" => "Valor em R$",
                
                 $espaco . 5 => 3.00,
-                $espaco . 6 => 6.00,
-                $espaco . 7 => 42.00, 
-                $espaco . 8 => 168.00,
-                $espaco . 9 => 504.00,
-                $espaco . 10 => 1260.00,
-                $espaco . 11 => 2772.00,
-                $espaco . 12 => 5544.00,
-                $espaco . 13 => 10296.00,
-                $espaco . 14 => 18018.00,
-                $espaco . 15 => 30030.00,
-                
+                $espaco . 6 => 18.00,
+                $espaco . 7 => 63.00,
+                $espaco . 8 => 168.00, 
+                $espaco . 9 => 378.00,
+                $espaco . 10 => 756.00,
+                $espaco . 11 => 1386.00,
+                $espaco . 12 => 2476.00,
+                $espaco . 13 => 3861.00,
+                $espaco . 14 => 6006.00,
+                $espaco . 15 => 9009.00,
+               
 
+);
+$TabelaValoresLF = array(
+
+    "Quanti. de numeros " => "Valor em R$",
+               
+                $espaco . 15 => 3.50,
+                $espaco . 16 => 56.00,
+                $espaco . 17 => 476.00,
+                $espaco . 18 => 2856.00,
+                $espaco . 19 => 13566.00,
+                $espaco . 20 => 54264.00,
+               
+
+);
+$TabelaValoresLM = array(
+
+    "Quanti. de numeros " => "Valor em R$",
+               
+                $espaco . 50 => 3.00,             
 );
 
 
-
-//Introducao();
-//escolhaLoteria();
+Introducao();
+escolhaLoteria();
 escolhaNumerosEQuantidade();
-//print $numeroApostas . "\n";
-//print $quantidadeApostas;
-
+sorteador();
 
 
 if ($loteria == 1); {
@@ -80,7 +97,8 @@ function Introducao()
     $continuar = true;
     while ($continuar == true) {
 
-        printSlow($vermelho . "\nComo funciona? Passo a passo: \n" . $resetar);
+        print "\n";
+        printSlow( $espaco . $vermelho . "Como funciona? Passo a passo: \n" . $resetar);
         printSlow("1- Escolha a forma de loteria que deseja.\n");
         printSlow("2- Selecione a quantidade de dezenas.\n");
         printSlow("3- Informe quantas apostas você deseja gerar.\n\n");
@@ -152,8 +170,6 @@ function escolhaLoteria()
     }
 } //fim da funcao
 
-
-
 function escolhaNumerosEQuantidade()
 {
     global $loteria;
@@ -164,6 +180,10 @@ function escolhaNumerosEQuantidade()
     global $numeroApostas;
     global $quantidadeApostas;
     global $TabelaValoresMG;
+    global $TabelaValoresQ;
+    global $TabelaValoresLF;
+    global $TabelaValoresLM;
+
     
     $TudoOK = false;
 
@@ -303,7 +323,28 @@ function escolhaNumerosEQuantidade()
                     foreach($TabelaValoresMG as $numero => $valor){
                         print ucfirst($numero) . " = " . $valor . "\n"; 
                     }
-                }
+                }// FIM MEGA SENA
+               
+                if($loteria == 2){
+                    
+                    foreach($TabelaValoresQ as $numero => $valor){
+                        print ucfirst($numero) . " = " . $valor . "\n"; 
+                    }
+                }// FIM QUINA
+
+                if($loteria == 3){
+                    
+                    foreach($TabelaValoresLF as $numero => $valor){
+                        print ucfirst($numero) . " = " . $valor . "\n"; 
+                    }
+                }// FIM LOTOFACIL
+
+                if($loteria == 4){
+                    
+                    foreach($TabelaValoresLM as $numero => $valor){
+                        print ucfirst($numero) . " = " . $valor . "\n"; 
+                    }
+                }// FIM LOTOMANIA
 
                 print "\n";
                 break;
@@ -330,6 +371,62 @@ function escolhaNumerosEQuantidade()
     if ($loteria == 4) {
         $quantidadeApostas = readline(printSlow("Por fim, escolha quantas apostas você quer gerar:  "));
     }
+
+}// fim da funcao
+
+function sorteador(){
+
+    global $loteria;
+    $valorTotal = 0;
+    global $espaco;
+    global $azul;
+    global $resetar;
+    $emojiBrilho = "\u{2728}";
+    global $numeroApostas;
+    global $quantidadeApostas;
+    global $TabelaValoresMG;
+    global $TabelaValoresQ;
+    global $TabelaValoresLF;
+    global $TabelaValoresLM;
+
+    print "\n";
+    printSlow($espaco . $emojiBrilho . $azul . "Sorteando números!!  " );
+    print $resetar . $emojiBrilho . "\n";
+
+
+    if($loteria == 1){
+       
+       for ($i = 0; $i < $quantidadeApostas; $i++){
+            
+            printSlow($i + 1 . "° aposta: ");
+            print "\n";
+            
+            $min = 1;
+            $max = 60;
+            
+            $numerosPossiveis = range($min, $max);
+            shuffle($numerosPossiveis);
+
+            $numerosSorteados = array_slice($numerosPossiveis, 0, $numeroApostas);
+            sort($numerosSorteados);
+
+            foreach($numerosSorteados as $numeros){
+                print   $numeros . " - ";
+                sleep(1);
+            }
+
+            print "\n";
+            printSlow("Valor gasto nesta aposta:  ");
+            print $TabelaValoresMG[$espaco . $numeroApostas];
+            $valorTotal += $TabelaValoresMG[$espaco . $numeroApostas];
+            printSlow(" R$.  ");
+            print "\n\n";
+       }
+       
+        printSlow("O valor total gasto será de: " . $valorTotal . " R$. ") ;
+    }
+
+
 
 }
 
