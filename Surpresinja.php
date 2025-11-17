@@ -432,8 +432,15 @@ function sorteador(){
             $numerosSorteados = array_slice($numerosPossiveis, 0, $numeroApostas);
             sort($numerosSorteados);
 
+            $ultimo = end($numerosSorteados);
+
             foreach($numerosSorteados as $numeros){
-                print   $numeros . " - ";
+                print  $numeros;
+
+                if($numeros != $ultimo){
+                    print " - ";
+                }
+                
                 sleep(1);
             }
 
